@@ -95,13 +95,19 @@ When working from the current XAMPP `wp-content` workspace, you can also run:
 
 The plugin can be updated later through **Plugins > Add New > Upload Plugin**. WordPress will replace the plugin code, while PI/student/member data remains in the WordPress database.
 
-Optional automatic updates are supported if a release JSON endpoint is configured in `wp-config.php`:
+GitHub release-based plugin updates are built in. By default, Academic Faculty Toolkit checks:
 
-```php
-define('ACADEMIC_DIRECTORY_UPDATE_JSON', 'https://raw.githubusercontent.com/medal-ece/Academic-Faculty-Toolkit/main/update-manifest.json');
+```text
+https://raw.githubusercontent.com/medal-ece/Academic-Faculty-Toolkit/main/update-manifest.json
 ```
 
-The JSON should include at least:
+Advanced deployments may override that endpoint in `wp-config.php` if needed:
+
+```php
+define('ACADEMIC_DIRECTORY_UPDATE_JSON', 'https://example.edu/custom-toolkit-update-manifest.json');
+```
+
+The update manifest should include at least:
 
 ```json
 {
@@ -131,6 +137,24 @@ The easiest maintenance workflow is:
 The plugin uses the WordPress database as the live source of truth. CSV files are retained as seed/import/export/backup formats, not as the primary live storage layer.
 
 Clean release ZIPs created by `build-releases.ps1` intentionally exclude bundled `data/*.csv` files, so a fresh installation starts with empty PI/student/member data.
+
+## Theme Template Overrides
+
+The toolkit owns academic data, routes, private links, profile saves, uploads, exports, and database behavior. Public presentation templates are overridable by the active theme.
+
+When rendering a public template, the plugin first checks:
+
+```text
+themes/your-theme/academic-directory/{template-name}.php
+```
+
+If no theme override exists, it falls back to:
+
+```text
+plugins/academic-student-directory/templates/{template-name}.php
+```
+
+Faculty Theme uses this system to keep MEDAL-specific profile, card, and directory layout in the theme while preserving plugin fallback behavior.
 
 ## Private Student Profile Editing
 

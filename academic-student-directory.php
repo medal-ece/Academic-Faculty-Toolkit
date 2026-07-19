@@ -2,12 +2,16 @@
 /*
 Plugin Name: Academic Faculty Toolkit
 Description: Faculty website tools for academic WordPress sites, including a database-backed people directory shortcode [student_list].
-Version: 4.0.3
+Version: 4.0.4
 Author: Soroosh Noorzad
 */
 
 if (!defined('ACADEMIC_DIRECTORY_VERSION')) {
-    define('ACADEMIC_DIRECTORY_VERSION', '4.0.3');
+    define('ACADEMIC_DIRECTORY_VERSION', '4.0.4');
+}
+
+if (!defined('ACADEMIC_DIRECTORY_DEFAULT_UPDATE_JSON')) {
+    define('ACADEMIC_DIRECTORY_DEFAULT_UPDATE_JSON', 'https://raw.githubusercontent.com/medal-ece/Academic-Faculty-Toolkit/main/update-manifest.json');
 }
 
 add_action('wp_enqueue_scripts', function() {
@@ -64,17 +68,19 @@ add_filter('template_include', array('AcademicDirectory', 'filter_virtual_profil
 add_action('wp_head', array('AcademicDirectory', 'render_virtual_profile_meta'), 2);
 
 function academic_directory_get_update_info() {
-    if (!defined('ACADEMIC_DIRECTORY_UPDATE_JSON') || !ACADEMIC_DIRECTORY_UPDATE_JSON) {
+    $manifest_url = defined('ACADEMIC_DIRECTORY_UPDATE_JSON') && ACADEMIC_DIRECTORY_UPDATE_JSON ? ACADEMIC_DIRECTORY_UPDATE_JSON : ACADEMIC_DIRECTORY_DEFAULT_UPDATE_JSON;
+
+    if (!$manifest_url) {
         return false;
     }
 
-    $cache_key = 'academic_directory_update_info';
+    $cache_key = 'academic_directory_update_info_' . md5(ACADEMIC_DIRECTORY_VERSION . '|' . $manifest_url);
     $cached = get_site_transient($cache_key);
     if (is_array($cached)) {
         return $cached;
     }
 
-    $response = wp_remote_get(ACADEMIC_DIRECTORY_UPDATE_JSON, array(
+    $response = wp_remote_get($manifest_url, array(
         'timeout' => 5,
         'headers' => array('Accept' => 'application/json'),
     ));
@@ -2575,9 +2581,18 @@ class AcademicDirectory {
         unset($categories);
     }
 
-    private static function get_template_path($template) {
+    private static function get_template_path($template, $allow_theme_override = true) {
         $template = ltrim((string) $template, '/\\');
-        $template = str_replace(array('../', '..\\'), '', $template);
+        $template = str_replace('\\', '/', $template);
+        $template = preg_replace('#(^|/)\.\.(/|$)#', '', $template);
+
+        if ($allow_theme_override) {
+            $theme_template = locate_template('academic-directory/' . $template);
+
+            if ($theme_template && file_exists($theme_template)) {
+                return apply_filters('academic_directory_template_path', $theme_template, $template, 'theme');
+            }
+        }
 
         $path = plugin_dir_path(__FILE__) . 'templates/' . $template;
 
@@ -2585,7 +2600,7 @@ class AcademicDirectory {
             return false;
         }
 
-        return $path;
+        return apply_filters('academic_directory_template_path', $path, $template, 'plugin');
     }
 
     public static function render_template($template, $vars = array()) {
