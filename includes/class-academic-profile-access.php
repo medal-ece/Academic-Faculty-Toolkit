@@ -10,6 +10,14 @@ class AcademicProfileAccess {
     const EMAIL_FILE = 'data/private/email-settings.csv';
     const LOCK_FILE = 'data/private/profile-edit.lock';
 
+    private static function default_email_message() {
+        return "Hello {student_name},\n\nPlease use the private link below to review and update your research group profile:\n\n{edit_link}\n\nThis link expires on {expires_at}.\n\n- Please do not forward it.\n- Please do not reply it.\n\nThank you,\n{site_name}";
+    }
+
+    private static function previous_default_email_message() {
+        return "Hello {student_name},\n\nPlease use the private link below to review and update your research group profile:\n\n{edit_link}\n\nThis link expires on {expires_at}. Please do not forward it.\n\nThank you,\n{site_name}";
+    }
+
     public static function init() {
         self::ensure_storage();
 
@@ -273,7 +281,7 @@ class AcademicProfileAccess {
             'sender_name' => get_bloginfo('name'),
             'sender_email' => 'admin@' . ($host ?: 'localhost'),
             'subject' => 'Update your {site_name} profile',
-            'message' => "Hello {student_name},\n\nPlease use the private link below to review and update your research group profile:\n\n{edit_link}\n\nThis link expires on {expires_at}. Please do not forward it.\n\nThank you,\n{site_name}",
+            'message' => self::default_email_message(),
             'expiry_days' => '180',
         );
         $table = self::read_csv(self::plugin_path(self::EMAIL_FILE));
@@ -285,7 +293,13 @@ class AcademicProfileAccess {
             }
         }
 
-        return wp_parse_args($settings, $defaults);
+        $settings = wp_parse_args($settings, $defaults);
+
+        if (isset($settings['message']) && trim(str_replace("\r\n", "\n", $settings['message'])) === trim(self::previous_default_email_message())) {
+            $settings['message'] = self::default_email_message();
+        }
+
+        return $settings;
     }
 
     public static function save_email_settings($data) {
@@ -491,7 +505,7 @@ class AcademicProfileAccess {
             'token' => $token,
             'student' => $student,
             'updated' => isset($_GET['updated']) && $_GET['updated'] === '1',
-            'error' => isset($_GET['error']) && $_GET['error'] === '1',
+            'error' => isset($_GET['error']) ? sanitize_key(wp_unslash($_GET['error'])) : '',
             'pronoun_options' => AcademicDirectory::get_pronoun_options_for_admin(),
             'education_title_options' => AcademicDirectory::get_education_title_options_for_admin(),
         ));
@@ -591,6 +605,62 @@ class AcademicProfileAccess {
         );
     }
 
+    private static function handle_profile_photo_upload($student) {
+        if (empty($_FILES['profile_photo']) || !is_array($_FILES['profile_photo'])) {
+            return '';
+        }
+
+        $file = $_FILES['profile_photo'];
+
+        if (!isset($file['error']) || (int) $file['error'] === UPLOAD_ERR_NO_FILE) {
+            return '';
+        }
+
+        if ((int) $file['error'] !== UPLOAD_ERR_OK) {
+            return new WP_Error('academic_profile_upload_error', 'The uploaded image could not be received. Please try a smaller JPG, PNG, WEBP, or GIF image.');
+        }
+
+        if (!empty($file['size']) && (int) $file['size'] > 5 * MB_IN_BYTES) {
+            return new WP_Error('academic_profile_upload_too_large', 'Please upload an image smaller than 5 MB.');
+        }
+
+        $allowed_mimes = array(
+            'jpg|jpeg|jpe' => 'image/jpeg',
+            'png'          => 'image/png',
+            'gif'          => 'image/gif',
+            'webp'         => 'image/webp',
+        );
+        $checked = wp_check_filetype_and_ext($file['tmp_name'], $file['name'], $allowed_mimes);
+
+        if (empty($checked['ext']) || empty($checked['type']) || strpos($checked['type'], 'image/') !== 0) {
+            return new WP_Error('academic_profile_upload_type', 'Please upload a valid JPG, PNG, WEBP, or GIF image.');
+        }
+
+        if (!function_exists('media_handle_upload')) {
+            require_once ABSPATH . 'wp-admin/includes/image.php';
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            require_once ABSPATH . 'wp-admin/includes/media.php';
+        }
+
+        $student_name = !empty($student['name']) ? $student['name'] : 'Research group member';
+        $attachment_id = media_handle_upload('profile_photo', 0, array(
+            'post_title' => sanitize_text_field($student_name . ' profile photo'),
+            'post_content' => '',
+            'post_excerpt' => '',
+        ));
+
+        if (is_wp_error($attachment_id)) {
+            return $attachment_id;
+        }
+
+        update_post_meta($attachment_id, '_wp_attachment_image_alt', sanitize_text_field($student_name));
+
+        $attached_file = get_post_meta($attachment_id, '_wp_attached_file', true);
+        $filename = $attached_file ? wp_basename($attached_file) : wp_basename((string) wp_get_attachment_url($attachment_id));
+
+        return sanitize_file_name($filename);
+    }
+
     private static function with_profile_lock($callback) {
         $lock = fopen(self::plugin_path(self::LOCK_FILE), 'c+');
         if (!$lock || !flock($lock, LOCK_EX)) {
@@ -627,6 +697,19 @@ class AcademicProfileAccess {
 
         $profile = isset($_POST['profile']) && is_array($_POST['profile']) ? $_POST['profile'] : array();
         $education = isset($_POST['education']) && is_array($_POST['education']) ? $_POST['education'] : array();
+        $student = AcademicDirectory::get_student_by_id($record['student_id']);
+        $uploaded_photo = $student ? self::handle_profile_photo_upload($student) : '';
+
+        if (is_wp_error($uploaded_photo)) {
+            $url = add_query_arg(array('token' => rawurlencode($token), 'error' => 'upload'), home_url('/edit-profile/'));
+            wp_safe_redirect($url);
+            exit;
+        }
+
+        if ($uploaded_photo !== '') {
+            $profile['image'] = $uploaded_photo;
+        }
+
         $saved = self::with_profile_lock(function() use ($record, $profile, $education) {
             return AcademicDirectory::save_student_profile_submission($record['student_id'], $profile, $education);
         });

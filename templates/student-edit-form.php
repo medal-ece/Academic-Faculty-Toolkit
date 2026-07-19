@@ -25,11 +25,13 @@ if (!defined('ABSPATH')) {
 
         <?php if ($updated): ?>
             <div class="academic-profile-message academic-profile-message-success"><p>Your profile was updated successfully.</p></div>
+        <?php elseif ($error === 'upload'): ?>
+            <div class="academic-profile-message academic-profile-message-error"><p>Your photo could not be uploaded. Please use a JPG, PNG, WEBP, or GIF image smaller than 5 MB.</p></div>
         <?php elseif ($error): ?>
             <div class="academic-profile-message academic-profile-message-error"><p>Your changes could not be saved. Please try again.</p></div>
         <?php endif; ?>
 
-        <form class="academic-profile-edit-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+        <form class="academic-profile-edit-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" enctype="multipart/form-data">
             <?php wp_nonce_field('academic_profile_save_public'); ?>
             <input type="hidden" name="action" value="academic_profile_save_public">
             <input type="hidden" name="profile_token" value="<?php echo esc_attr($token); ?>">
@@ -82,6 +84,19 @@ if (!defined('ABSPATH')) {
                             <?php endforeach; ?>
                         </select>
                     </label>
+                </div>
+                <div class="academic-profile-photo-upload">
+                    <label>
+                        <span>Profile Photo</span>
+                        <input type="file" name="profile_photo" accept="image/jpeg,image/png,image/gif,image/webp">
+                        <small class="academic-field-hint">Optional. Upload a JPG, PNG, WEBP, or GIF image smaller than 5 MB. If you leave this blank, your current profile photo stays unchanged.</small>
+                    </label>
+                    <?php if ($image_id): ?>
+                        <div class="academic-profile-photo-preview">
+                            <?php echo wp_get_attachment_image($image_id, 'thumbnail', false, array('alt' => $student['name'])); ?>
+                            <span>Current photo</span>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </section>
 

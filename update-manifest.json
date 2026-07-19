@@ -1,10 +1,10 @@
 {
-  "version": "4.0.2",
-  "download_url": "https://github.com/medal-ece/Academic-Faculty-Toolkit/releases/download/v4.0.2/academic-student-directory.zip",
-  "details_url": "https://github.com/medal-ece/Academic-Faculty-Toolkit/releases/tag/v4.0.2",
+  "version": "4.0.3",
+  "download_url": "https://github.com/medal-ece/Academic-Faculty-Toolkit/releases/download/v4.0.3/academic-student-directory.zip",
+  "details_url": "https://github.com/medal-ece/Academic-Faculty-Toolkit/releases/tag/v4.0.3",
   "requires": "6.0",
   "requires_php": "7.4",
   "tested": "6.8",
   "description": "Academic Faculty Toolkit provides database-backed PI, student/member, education, profile-link, and research-group route management for academic WordPress sites.",
-  "changelog": "Reorganized Faculty Toolkit tabs/submenus and refined the admin interface with a compact academic styling pass."
+  "changelog": "Updated the private-link email template and added secure student-side profile photo uploads."
 }

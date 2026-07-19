@@ -2,12 +2,12 @@
 /*
 Plugin Name: Academic Faculty Toolkit
 Description: Faculty website tools for academic WordPress sites, including a database-backed people directory shortcode [student_list].
-Version: 4.0.2
+Version: 4.0.3
 Author: Soroosh Noorzad
 */
 
 if (!defined('ACADEMIC_DIRECTORY_VERSION')) {
-    define('ACADEMIC_DIRECTORY_VERSION', '4.0.2');
+    define('ACADEMIC_DIRECTORY_VERSION', '4.0.3');
 }
 
 add_action('wp_enqueue_scripts', function() {
@@ -2412,6 +2412,7 @@ class AcademicDirectory {
             'hobbies',
             'current_position',
             'position_updated',
+            'image',
         );
 
         foreach ($table['rows'] as $existing) {
@@ -2422,7 +2423,7 @@ class AcademicDirectory {
                 $key = isset($normalized_headers[$index]) ? $normalized_headers[$index] : self::normalize_key($header);
                 $value = isset($existing[$key]) ? $existing[$key] : '';
 
-                if ($existing_id === $student_id && in_array($key, $allowed_fields, true)) {
+                if ($existing_id === $student_id && in_array($key, $allowed_fields, true) && array_key_exists($key, $profile)) {
                     $submitted = isset($profile[$key]) ? wp_unslash($profile[$key]) : '';
 
                     if ($key === 'secondary_email') {
@@ -2431,6 +2432,8 @@ class AcademicDirectory {
                         $value = esc_url_raw($submitted);
                     } elseif ($key === 'bio') {
                         $value = wp_kses_post($submitted);
+                    } elseif ($key === 'image') {
+                        $value = sanitize_file_name($submitted);
                     } elseif (in_array($key, array('research_interests', 'hobbies'), true)) {
                         $value = sanitize_textarea_field($submitted);
                     } else {

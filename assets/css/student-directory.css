@@ -136,6 +136,46 @@
     gap: 0 1rem;
 }
 
+.academic-profile-photo-upload {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid #E2E6E6;
+    background: #F7F9FB;
+}
+
+.academic-profile-photo-upload label {
+    margin-bottom: 0;
+}
+
+.academic-profile-photo-upload input[type="file"] {
+    min-height: auto;
+    padding: 0.75rem;
+    border-style: dashed;
+    background: #fff;
+}
+
+.academic-profile-photo-preview {
+    display: grid;
+    gap: 0.35rem;
+    justify-items: center;
+    color: #707271;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.academic-profile-photo-preview img {
+    display: block;
+    width: 88px;
+    height: 88px;
+    border: 1px solid #E2E6E6;
+    object-fit: cover;
+}
+
 .academic-profile-education-editor {
     display: grid;
     gap: 0.85rem;
@@ -1867,6 +1907,10 @@
 
 @media (max-width: 780px) {
     .academic-profile-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .academic-profile-photo-upload {
         grid-template-columns: 1fr;
     }
 
