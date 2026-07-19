@@ -2,12 +2,12 @@
 /*
 Plugin Name: Academic Faculty Toolkit
 Description: Faculty website tools for academic WordPress sites, including a database-backed people directory shortcode [student_list].
-Version: 4.0.0
+Version: 4.0.1
 Author: Soroosh Noorzad
 */
 
 if (!defined('ACADEMIC_DIRECTORY_VERSION')) {
-    define('ACADEMIC_DIRECTORY_VERSION', '4.0.0');
+    define('ACADEMIC_DIRECTORY_VERSION', '4.0.1');
 }
 
 add_action('wp_enqueue_scripts', function() {
@@ -2705,13 +2705,13 @@ class AcademicDirectoryAdmin {
             'academic-directory-admin',
             plugins_url('assets/css/admin.css', __FILE__),
             array(),
-            '2.2'
+            ACADEMIC_DIRECTORY_VERSION
         );
         wp_enqueue_script(
             'academic-directory-admin',
             plugins_url('assets/js/admin.js', __FILE__),
             array('jquery', 'jquery-ui-sortable'),
-            '2.2',
+            ACADEMIC_DIRECTORY_VERSION,
             true
         );
     }
