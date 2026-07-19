@@ -2,12 +2,12 @@
 /*
 Plugin Name: Academic Faculty Toolkit
 Description: Faculty website tools for academic WordPress sites, including a database-backed people directory shortcode [student_list].
-Version: 4.0.1
+Version: 4.0.2
 Author: Soroosh Noorzad
 */
 
 if (!defined('ACADEMIC_DIRECTORY_VERSION')) {
-    define('ACADEMIC_DIRECTORY_VERSION', '4.0.1');
+    define('ACADEMIC_DIRECTORY_VERSION', '4.0.2');
 }
 
 add_action('wp_enqueue_scripts', function() {
@@ -2676,8 +2676,8 @@ class AcademicDirectoryAdmin {
 
         add_submenu_page(
             self::$page_slug,
-            'Toolkit Dashboard',
-            'Toolkit Dashboard',
+            'Faculty Toolkit Dashboard',
+            'Dashboard',
             'manage_options',
             self::$page_slug,
             array(__CLASS__, 'render_page')
@@ -2718,18 +2718,18 @@ class AcademicDirectoryAdmin {
 
     private static function get_active_tab() {
         $tab = isset($_GET['tab']) ? sanitize_key(wp_unslash($_GET['tab'])) : 'pi';
-        return in_array($tab, array('pi', 'positions', 'students', 'links', 'email', 'health', 'settings'), true) ? $tab : 'pi';
+        return in_array($tab, array('pi', 'students', 'positions', 'links', 'settings', 'health', 'email'), true) ? $tab : 'pi';
     }
 
     private static function render_tabs($active_tab) {
         $tabs = array(
-            'pi' => 'PI Information',
+            'pi' => 'PI Profile',
+            'students' => 'People',
             'positions' => 'Open Positions',
-            'students' => 'Students',
-            'links' => 'Profile Links',
-            'email' => 'Email Settings',
+            'links' => 'Private Links',
+            'settings' => 'Ordering & Export',
             'health' => 'Site Health',
-            'settings' => 'Settings',
+            'email' => 'Email',
         );
 
         echo '<h2 class="nav-tab-wrapper">';
@@ -2883,7 +2883,7 @@ class AcademicDirectoryAdmin {
         ?>
         <div class="wrap academic-directory-admin academic-directory-help">
             <h1>Faculty Toolkit Setup Guide</h1>
-            <p class="description">A practical in-admin guide for initializing and maintaining PI/student profile data. The main dashboard is under Faculty Toolkit &gt; Toolkit Dashboard.</p>
+            <p class="description">A practical in-admin guide for initializing and maintaining PI/student profile data. The main dashboard is under Faculty Toolkit &gt; Dashboard.</p>
 
             <style>
                 .academic-directory-help-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1.25rem; }
@@ -2907,7 +2907,7 @@ class AcademicDirectoryAdmin {
                         <li>Activate the Faculty Theme.</li>
                         <li>Activate Academic Faculty Toolkit.</li>
                         <li>Go to Settings &gt; Permalinks and click Save Changes once.</li>
-                        <li>Create normal pages such as Home, NEWS, Research, Courses, Gallery, and Contact.</li>
+                        <li>Create normal pages such as Home, NEWS, Research, Gallery, and Contact.</li>
                         <li>Do not create a normal WordPress page at <span class="academic-directory-help-code">/research-group/</span>.</li>
                     </ol>
                 </section>
@@ -2915,7 +2915,7 @@ class AcademicDirectoryAdmin {
                 <section class="academic-directory-help-card">
                     <h2>2. Initialize the PI</h2>
                     <ol>
-                        <li>Open Faculty Toolkit &gt; Toolkit Dashboard &gt; PI Information.</li>
+                        <li>Open Faculty Toolkit &gt; Dashboard &gt; PI Profile.</li>
                         <li>Enter name, title, department, institution, contact details, and links.</li>
                         <li>Select a profile image from the Media Library.</li>
                         <li>Add short bio for the Research Group page.</li>
@@ -2929,7 +2929,7 @@ class AcademicDirectoryAdmin {
                 <section class="academic-directory-help-card">
                     <h2>3. Configure open positions</h2>
                     <ol>
-                        <li>Open Faculty Toolkit &gt; Toolkit Dashboard &gt; Open Positions.</li>
+                        <li>Open Faculty Toolkit &gt; Dashboard &gt; Open Positions.</li>
                         <li>Turn the section on or off.</li>
                         <li>Add the title and rich text announcement.</li>
                         <li>Use the button URL to link to a FAQ post or contact page.</li>
@@ -2940,7 +2940,7 @@ class AcademicDirectoryAdmin {
                 <section class="academic-directory-help-card">
                     <h2>4. Add students and members</h2>
                     <ol>
-                        <li>Open Faculty Toolkit &gt; Toolkit Dashboard &gt; Students.</li>
+                        <li>Open Faculty Toolkit &gt; Dashboard &gt; People.</li>
                         <li>Add each person with a stable profile slug.</li>
                         <li>Choose category and active/past status.</li>
                         <li>Add profile image, bio, research interests, education, and current position where relevant.</li>
@@ -2952,7 +2952,7 @@ class AcademicDirectoryAdmin {
                 <section class="academic-directory-help-card">
                     <h2>5. Private profile links</h2>
                     <ol>
-                        <li>Open Faculty Toolkit &gt; Toolkit Dashboard &gt; Profile Links.</li>
+                        <li>Open Faculty Toolkit &gt; Dashboard &gt; Private Links.</li>
                         <li>Generate a private link for a student.</li>
                         <li>Copy it manually or send it by email if WordPress mail is configured.</li>
                         <li>Students can edit approved public fields without having WordPress accounts.</li>

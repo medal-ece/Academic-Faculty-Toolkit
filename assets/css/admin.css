@@ -452,3 +452,256 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Final compact academic admin pass. Keep this near the end so it wins over older panel styles. */
+.academic-directory-admin {
+    --academic-admin-accent: #2f4858;
+    --academic-admin-accent-dark: #1d2f3a;
+    --academic-admin-warm: #8b6f3d;
+    --academic-admin-ink: #18222b;
+    --academic-admin-muted: #66717b;
+    --academic-admin-line: #d7dde2;
+    --academic-admin-soft: #f7f8f8;
+    --academic-admin-card: #fff;
+}
+
+.academic-directory-admin > h1 {
+    margin-top: 1.05rem;
+    color: var(--academic-admin-ink);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -.018em;
+}
+
+.academic-directory-admin > .description {
+    color: var(--academic-admin-muted);
+    font-size: .92rem;
+}
+
+.academic-directory-admin .nav-tab-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .2rem;
+    margin: 1rem 0 1rem;
+    padding: .35rem;
+    border: 1px solid var(--academic-admin-line);
+    border-radius: 4px;
+    background: #f2f4f5;
+    box-shadow: none;
+}
+
+.academic-directory-admin .nav-tab {
+    margin: 0;
+    padding: .46rem .72rem;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    background: transparent;
+    color: var(--academic-admin-ink);
+    font-size: .88rem;
+    font-weight: 700;
+    transition: background-color .12s ease, color .12s ease, border-color .12s ease;
+}
+
+.academic-directory-admin .nav-tab:hover {
+    border-color: #c9d1d7;
+    background: #fff;
+    color: var(--academic-admin-accent-dark);
+    transform: none;
+    box-shadow: none;
+}
+
+.academic-directory-admin .nav-tab-active,
+.academic-directory-admin .nav-tab-active:hover {
+    border-color: var(--academic-admin-accent);
+    background: var(--academic-admin-accent);
+    color: #fff;
+    box-shadow: none;
+}
+
+.academic-directory-admin h2 {
+    margin: 1.15rem 0 .65rem;
+    color: var(--academic-admin-ink);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.28rem;
+    letter-spacing: -.01em;
+}
+
+.academic-directory-admin h3 {
+    margin: 1rem 0 .55rem;
+    color: var(--academic-admin-ink);
+    font-size: .98rem;
+    letter-spacing: .01em;
+}
+
+.academic-directory-admin .student-edit-grid,
+.academic-directory-admin .settings-grid,
+.academic-directory-admin .academic-directory-help-grid {
+    gap: 1rem;
+}
+
+.academic-directory-admin .student-edit-panel,
+.academic-directory-admin .settings-panel,
+.academic-directory-admin .academic-directory-help-card,
+.academic-directory-admin .academic-directory-help-callout,
+.academic-directory-admin .education-edit-form {
+    border: 1px solid var(--academic-admin-line);
+    border-radius: 3px;
+    background: var(--academic-admin-card);
+    box-shadow: none;
+}
+
+.academic-directory-admin .student-edit-panel,
+.academic-directory-admin .settings-panel,
+.academic-directory-admin .academic-directory-help-card {
+    padding: .9rem;
+}
+
+.academic-directory-admin .academic-directory-help-callout {
+    padding: .9rem 1rem;
+    border-left: 4px solid var(--academic-admin-warm);
+}
+
+.academic-directory-admin .student-edit-panel h3,
+.academic-directory-admin .settings-panel h3 {
+    margin-top: 0;
+    padding-bottom: .55rem;
+    border-bottom: 1px solid var(--academic-admin-line);
+}
+
+.academic-directory-admin .form-table {
+    margin-top: .55rem;
+    border-collapse: separate;
+    border-spacing: 0 .52rem;
+}
+
+.academic-directory-admin .form-table th {
+    width: 215px;
+    padding: .68rem .9rem .68rem 0;
+    color: var(--academic-admin-ink);
+    font-weight: 700;
+    vertical-align: top;
+}
+
+.academic-directory-admin .form-table td {
+    padding: .6rem .72rem;
+    border: 1px solid var(--academic-admin-line);
+    border-radius: 3px;
+    background: var(--academic-admin-card);
+    box-shadow: none;
+}
+
+.academic-directory-admin label,
+.academic-directory-admin .student-bio-editor-wrap > span {
+    color: var(--academic-admin-ink);
+    font-weight: 650;
+}
+
+.academic-directory-admin input[type="text"],
+.academic-directory-admin input[type="url"],
+.academic-directory-admin input[type="email"],
+.academic-directory-admin input[type="number"],
+.academic-directory-admin input[type="password"],
+.academic-directory-admin input:not([type]),
+.academic-directory-admin select,
+.academic-directory-admin textarea {
+    min-height: 36px;
+    border: 1px solid #c6cdd3;
+    border-radius: 3px;
+    background: #fff;
+    box-shadow: none;
+    color: var(--academic-admin-ink);
+    transition: border-color .12s ease, box-shadow .12s ease, background-color .12s ease;
+}
+
+.academic-directory-admin textarea {
+    padding: .55rem .62rem;
+    line-height: 1.45;
+}
+
+.academic-directory-admin input:focus,
+.academic-directory-admin select:focus,
+.academic-directory-admin textarea:focus {
+    border-color: var(--academic-admin-accent);
+    box-shadow: 0 0 0 2px rgba(47,72,88,.13);
+    outline: none;
+}
+
+.academic-directory-admin input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 2px;
+    box-shadow: none;
+    vertical-align: middle;
+}
+
+.academic-directory-admin .button {
+    min-height: 34px;
+    padding: .2rem .7rem;
+    border-radius: 3px;
+    border-color: #b8c3cc;
+    font-weight: 650;
+    transition: background-color .12s ease, border-color .12s ease;
+}
+
+.academic-directory-admin .button:hover {
+    border-color: #8f9ba5;
+    transform: none;
+    box-shadow: none;
+}
+
+.academic-directory-admin .button-primary {
+    border-color: var(--academic-admin-accent);
+    background: var(--academic-admin-accent);
+}
+
+.academic-directory-admin .academic-media-preview {
+    width: 10rem;
+    padding: .35rem;
+    border-color: var(--academic-admin-line);
+    border-radius: 3px;
+    background: #f8fafb;
+    box-shadow: none;
+}
+
+.academic-directory-admin .academic-media-preview img {
+    height: 5.5rem;
+    border-radius: 2px;
+}
+
+.academic-directory-admin .student-list-table,
+.academic-directory-admin .student-education-table,
+.academic-directory-admin .academic-profile-links-table,
+.academic-directory-admin .settings-options-table,
+.academic-directory-admin .widefat {
+    border-color: var(--academic-admin-line);
+    border-radius: 3px;
+    box-shadow: none;
+}
+
+.academic-directory-admin .widefat thead th,
+.academic-directory-admin .widefat tfoot th {
+    background: #f3f6f8;
+    color: var(--academic-admin-ink);
+    font-weight: 700;
+}
+
+.academic-sortable-list li {
+    padding: .62rem .72rem;
+    border-color: var(--academic-admin-line);
+    border-radius: 3px;
+    background: #fff;
+    box-shadow: none;
+}
+
+.academic-sort-handle {
+    border-radius: 3px;
+    background: #eef2f5;
+    color: var(--academic-admin-muted);
+}
+
+.academic-directory-admin code,
+.academic-directory-admin .wp-editor-wrap {
+    border-radius: 3px;
+    box-shadow: none;
+}
