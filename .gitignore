@@ -1,0 +1,28 @@
+# Local/live data: the plugin stores live people data in the WordPress database.
+# CSV files here are only seed/export/backup artifacts and should not be committed.
+data/*.csv
+data/backups/*
+data/private/*
+
+# Keep directory protection placeholders.
+!data/index.php
+!data/.htaccess
+!data/web.config
+!data/backups/index.php
+!data/private/index.php
+
+# Release/build artifacts.
+*.zip
+releases/
+.build/
+
+# OS/editor files.
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Dependency/build folders, if ever added.
+node_modules/
+vendor/
+*.map

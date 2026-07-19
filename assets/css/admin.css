@@ -1,0 +1,167 @@
+.academic-directory-admin .student-list-table .student-name {
+    font-weight: 600;
+}
+
+.academic-directory-admin .student-edit-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin: 16px 0;
+}
+
+.academic-directory-admin .student-edit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+    max-width: 1100px;
+}
+
+.academic-directory-admin .student-edit-panel {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    padding: 16px;
+}
+
+.academic-directory-admin .student-edit-panel h3 {
+    margin: 0 0 12px;
+}
+
+.academic-directory-admin .student-edit-panel label {
+    display: block;
+    font-weight: 600;
+    margin: 12px 0 5px;
+}
+
+.academic-directory-admin .student-bio-editor-wrap > span {
+    display: block;
+    font-weight: 600;
+    margin: 12px 0 5px;
+}
+
+.academic-directory-admin .student-edit-panel input,
+.academic-directory-admin .student-edit-panel select,
+.academic-directory-admin .student-edit-panel textarea {
+    width: 100%;
+    max-width: 100%;
+}
+
+.academic-directory-admin .student-edit-panel .wp-editor-wrap {
+    max-width: 100%;
+}
+
+.academic-directory-admin .media-field {
+    display: flex;
+    gap: 8px;
+}
+
+.academic-directory-admin .student-education-panel {
+    grid-column: 1 / -1;
+    max-width: 1100px;
+}
+
+.academic-directory-admin .education-edit-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+    padding: 14px;
+    border: 1px solid #dcdcde;
+    background: #f6f7f7;
+}
+
+.academic-directory-admin .education-edit-form .wide {
+    grid-column: 1 / -1;
+}
+
+.academic-directory-admin .student-education-table .button {
+    min-width: 72px;
+}
+
+.academic-directory-admin .settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 18px;
+    max-width: 1200px;
+}
+
+.academic-directory-admin .settings-panel {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    padding: 16px;
+}
+
+.academic-directory-admin .settings-panel h3 {
+    margin-top: 0;
+}
+
+.academic-directory-admin .settings-options-table input {
+    width: 100%;
+}
+
+.academic-directory-admin .settings-options-table .rank-input {
+    max-width: 90px;
+}
+
+.academic-directory-admin code {
+    font-size: 13px;
+}
+
+.academic-directory-admin .academic-profile-links-table {
+    max-width: 1280px;
+}
+
+.academic-directory-admin .academic-profile-links-table th,
+.academic-directory-admin .academic-profile-links-table td {
+    vertical-align: middle;
+}
+
+.academic-directory-admin .academic-link-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.academic-sortable-list {
+    max-width: 520px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.academic-sortable-list li {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin: 0 0 .45rem;
+    padding: .65rem .75rem;
+    border: 1px solid #c3c4c7;
+    background: #fff;
+}
+
+.academic-sort-handle {
+    color: #50575e;
+    cursor: move;
+    font-weight: 700;
+}
+
+.academic-sort-placeholder {
+    min-height: 2.75rem;
+    margin: 0 0 .45rem;
+    border: 2px dashed #8c8f94;
+    background: #f6f7f7;
+}
+
+.academic-media-preview {
+    display: none;
+    width: 9rem;
+    margin-top: .5rem;
+    padding: .35rem;
+    border: 1px solid #dcdcde;
+    background: #fff;
+}
+
+.academic-media-preview img {
+    display: block;
+    width: 100%;
+    height: 6rem;
+    object-fit: cover;
+}
